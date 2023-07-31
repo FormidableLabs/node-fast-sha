@@ -38,6 +38,7 @@ jobs:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+            filename: ${{ env.APP_NAME }}.linux-x64-gnu.node
             build: |-
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
@@ -105,7 +106,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: bindings-${{ matrix.settings.target }}
+          name: ${{ matrix.settings.filename }}
           path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   publish:
