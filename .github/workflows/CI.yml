@@ -108,10 +108,12 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
+      - name: List
+        run: ls -al
+        shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.APP_NAME }}.${{ matrix.settings.target }}.node
           path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   publish:

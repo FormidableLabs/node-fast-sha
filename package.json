@@ -32,7 +32,7 @@
   },
   "scripts": {
     "typegen": "napi build --dts lib/index.d.ts",
-    "build": "napi build --release",
+    "build": "napi build --platform --release",
     "build:debug": "napi build",
     "test": "ava",
     "changeset": "changeset",
