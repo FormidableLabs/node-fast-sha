@@ -31,7 +31,7 @@
     "node": ">= 10"
   },
   "scripts": {
-    "install": "node-pre-gyp install",
+    "install": "node-pre-gyp install --fallback-to-build",
     "typegen": "napi build --dts lib/index.d.ts",
     "build": "napi build --release",
     "build:debug": "napi build",
