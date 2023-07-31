@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import { sum } from '../index.js'
+import { sha256 } from '../index.js'
 
-test('sum from native', (t) => {
-  t.is(sum(1, 2), 3)
+test('sha256 from native', (t) => {
+  t.is(typeof sha256("Hello world!"), "string")
 })

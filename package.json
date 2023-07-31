@@ -2,9 +2,8 @@
   "name": "node-fast-sha",
   "version": "0.0.3",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "lib/index.mjs",
-  "types": "lib/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "napi": {
     "name": "node-fast-sha",
     "triples": {}
@@ -31,7 +30,6 @@
     "node": ">= 10"
   },
   "scripts": {
-    "typegen": "napi build --dts lib/index.d.ts",
     "build": "napi build --platform --release",
     "build:debug": "napi build",
     "test": "ava",
