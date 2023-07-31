@@ -104,11 +104,11 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
-      - name: Echo
-        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node && ls -al
+      - name: Rename executable
+        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node
         shell: bash
-#      - name: Upload artifact
-#        run: gh release upload ${{ env.RELEASE_VERSION }} node-fast-sha.node
+      - name: Upload artifact
+        run: gh release upload ${{ env.RELEASE_VERSION }} ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node --clobber
 
 #      - name: Upload artifact
 #        uses: actions/upload-artifact@v3
