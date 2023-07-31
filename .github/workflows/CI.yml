@@ -27,14 +27,14 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - host: macos-latest
-            target: x86_64-apple-darwin
-            build: |
-              yarn build
-              strip -x *.node
-          - host: windows-latest
-            build: yarn build
-            target: x86_64-pc-windows-msvc
+#          - host: macos-latest
+#            target: x86_64-apple-darwin
+#            build: |
+#              yarn build
+#              strip -x *.node
+#          - host: windows-latest
+#            build: yarn build
+#            target: x86_64-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
@@ -114,15 +114,31 @@ jobs:
     needs:
       - build
     steps:
-      - name: PR or Publish
-        id: changesets
-        uses: changesets/action@v1
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          version: yarn run version
-          publish: yarn run changeset publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          node-version: 18
+          check-latest: true
+          cache: yarn
+      - name: Install deps
+        run: yarn install
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: .
+      - name: Test a thing
+        shell: bash
+        run: ls -al
+#      - name: PR or Publish
+#        id: changesets
+#        uses: changesets/action@v1
+#        with:
+#          version: yarn run version
+#          publish: yarn run changeset publish
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 #    needs:
 #      - test-macOS-windows-binding
