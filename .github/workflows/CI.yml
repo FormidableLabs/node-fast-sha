@@ -105,7 +105,7 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
       - name: Echo
-        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node  ls -al
+        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node && ls -al
         shell: bash
 #      - name: Upload artifact
 #        run: gh release upload ${{ env.RELEASE_VERSION }} node-fast-sha.node
