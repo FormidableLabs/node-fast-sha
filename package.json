@@ -54,7 +54,7 @@
     "module_name": "node-fast-sha",
     "module_path": ".",
     "host": "https://github.com/formidablelabs/node-fast-sha/releases/download",
-    "package_name": "{module_name}-v0.0.1-{platform}-{arch}.tar.gz",
+    "package_name": "{module_name}-v0.0.1-{platform}-{arch}.node",
     "remote_path": "v0.0.1"
   }
 }
