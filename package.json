@@ -1,15 +1,26 @@
 {
   "name": "node-fast-sha",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "license": "MIT",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
     "name": "node-fast-sha",
     "triples": {}
   },
-  "license": "MIT",
+  "author": {
+    "name": "Formidable",
+    "url": "https://formidable.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FormidableLabs/node-fast-sha"
+  },
+  "homepage": "https://github.com/formidablelabs/node-fast-sha",
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@napi-rs/cli": "^2.16.2",
+    "@svitejs/changesets-changelog-github-compact": "^1.1.0",
     "ava": "^5.1.1"
   },
   "ava": {
@@ -19,13 +30,11 @@
     "node": ">= 10"
   },
   "scripts": {
-    "artifacts": "napi artifacts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
-    "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
-    "universal": "napi universal",
-    "version": "napi version"
+    "changeset": "changeset",
+    "version": "pnpm changeset version && pnpm install --no-frozen-lockfile"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@1.22.1"
 }
