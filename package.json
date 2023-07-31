@@ -2,8 +2,9 @@
   "name": "node-fast-sha",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
   "napi": {
     "name": "node-fast-sha",
     "triples": {}
@@ -30,12 +31,22 @@
     "node": ">= 10"
   },
   "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
-    "build:debug": "napi build --platform",
+    "typegen": "napi build --dts lib/index.d.ts",
+    "build": "napi build --release",
+    "build:debug": "napi build",
     "test": "ava",
     "changeset": "changeset",
     "version": "pnpm changeset version && pnpm install --no-frozen-lockfile"
   },
-  "packageManager": "yarn@1.22.1"
+  "packageManager": "yarn@1.22.1",
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.11"
+  },
+  "binary": {
+    "module_name": "node-fast-sha",
+    "module_path": ".",
+    "host": "https://github.com/formidablelabs/node-fast-sha/releases/download",
+    "package_name": "{module_name}-v{version}-{platform}-{arch}.tar.gz",
+    "remote_path": "v{version}"
+  }
 }
