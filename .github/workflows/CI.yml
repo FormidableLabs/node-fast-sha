@@ -32,11 +32,11 @@ jobs:
 #            build: |
 #              yarn build
 #              strip -x *.node
-          - host: macos-latest
-            target: aarch64-apple-darwin
-            build: |
-              yarn build --target aarch64-apple-darwin
-              strip -x *.node
+#          - host: macos-latest
+#            target: aarch64-apple-darwin
+#            build: |
+#              yarn build --target aarch64-apple-darwin
+#              strip -x *.node
 #          - host: windows-latest
 #            build: yarn build
 #            target: x86_64-pc-windows-msvc
@@ -108,12 +108,16 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
+      - name: Artifact name
+        run: echo "ARTIFACT_NAME=(ls ${{ env.APP_NAME }}.*.node)" >> $GITHUB_ENV
+        shell: bash
       - name: List
         run: ls -al
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
+          name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   publish:
