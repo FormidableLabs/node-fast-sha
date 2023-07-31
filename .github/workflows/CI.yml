@@ -3,10 +3,7 @@ env:
   DEBUG: napi:*
   APP_NAME: node-fast-sha
   MACOSX_DEPLOYMENT_TARGET: "10.13"
-permissions:
-  contents: write
-  id-token: write
-"on":
+on:
   push:
     branches:
       - main
