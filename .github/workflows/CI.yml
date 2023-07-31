@@ -111,6 +111,9 @@ jobs:
         shell: bash
       - name: Upload artifact
         run: gh release upload ${{ env.RELEASE_VERSION }} ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+
 
 #      - name: Upload artifact
 #        uses: actions/upload-artifact@v3
