@@ -105,7 +105,8 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
       - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        # TODO: This needs to be from package.json
+        run: echo "v0.0.1" >> $GITHUB_ENV
       - name: Rename executable
         run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node
         shell: bash
