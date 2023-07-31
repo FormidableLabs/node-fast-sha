@@ -42,11 +42,18 @@
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.0.11"
   },
-  "binary": {
+  "binary_ACTUAL": {
     "module_name": "node-fast-sha",
     "module_path": ".",
     "host": "https://github.com/formidablelabs/node-fast-sha/releases/download",
     "package_name": "{module_name}-v{version}-{platform}-{arch}.tar.gz",
     "remote_path": "v{version}"
+  },
+  "binary": {
+    "module_name": "node-fast-sha",
+    "module_path": ".",
+    "host": "https://github.com/formidablelabs/node-fast-sha/releases/download",
+    "package_name": "{module_name}-v0.0.1-{platform}-{arch}.tar.gz",
+    "remote_path": "v0.0.1"
   }
 }
