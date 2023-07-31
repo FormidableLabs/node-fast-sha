@@ -104,14 +104,11 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
-      - name: Set env
-        # TODO: This needs to be from package.json
-        run: echo "v0.0.1" >> $GITHUB_ENV
-      - name: Rename executable
-        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node
+      - name: Rename executable # TODO: don't hard-code 0.0.1
+        run: mv node-fast-sha.node ${{ env.APP_NAME}}-v0.0.1-${{ matrix.settings.target}}.node
         shell: bash
       - name: Upload artifact
-        run: gh release upload ${{ env.RELEASE_VERSION }} ${{ env.APP_NAME}}-v${{ env.RELEASE_VERSION }}-${{ matrix.settings.target}}.node --clobber
+        run: gh release upload v0.0.1 ${{ env.APP_NAME}}-v0.0.1-${{ matrix.settings.target}}.node --clobber
         env:
           GH_TOKEN: ${{ github.token }}
 
