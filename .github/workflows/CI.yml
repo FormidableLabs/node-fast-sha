@@ -135,9 +135,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: .
-      - name: Test a thing
+      - name: Unzip files
         shell: bash
-        run: ls -al
+        run: unzip *.node && ls -al
       - name: PR or Publish
         id: changesets
         uses: changesets/action@v1
