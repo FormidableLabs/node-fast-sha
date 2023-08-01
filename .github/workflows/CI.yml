@@ -16,6 +16,10 @@ on:
       - .editorconfig
       - docs/**
   workflow_dispatch:
+    inputs:
+      force_build_binaries:
+        type: boolean
+        description: Do you want to force-build the binaries (regardless of publish step)?
 
 jobs:
   publish:
@@ -61,7 +65,7 @@ jobs:
 
 
   build:
-    # TODO: if check if changesets actually cut a release (or workflow dispatch triggered with flag)
+    if: ${{ github.event.inputs.force_build_binaries == 'true' || steps.publish.outputs.published }}
     needs: publish
     strategy:
       fail-fast: false
@@ -72,11 +76,11 @@ jobs:
 #            build: |
 #              yarn build
 #              strip -x *.node
-#          - host: macos-latest
-#            target: aarch64-apple-darwin
-#            build: |
-#              yarn build --target aarch64-apple-darwin
-#              strip -x *.node
+          - host: macos-latest
+            target: aarch64-apple-darwin
+            build: |
+              yarn build --target aarch64-apple-darwin
+              strip -x ./*.node
 #          - host: windows-latest
 #            build: yarn build
 #            target: x86_64-pc-windows-msvc
@@ -160,9 +164,4 @@ jobs:
         run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
         env:
           GH_TOKEN: ${{ github.token }}
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ env.ARTIFACT_NAME }}
-#          path: ${{ env.APP_NAME }}.*.node
-#          if-no-files-found: error
+
