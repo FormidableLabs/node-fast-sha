@@ -66,8 +66,6 @@ jobs:
 
   build:
     if: ${{ github.event.inputs.force_build_binaries }}
-    env:
-      HAS_PUBLISHED: ${{ steps.publish.outputs.published }}
     needs: publish
     strategy:
       fail-fast: false
