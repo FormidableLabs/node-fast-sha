@@ -70,14 +70,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Use getBinaryName from install/binary to determine output_name here.
         settings:
-#          - host: macos-latest
-#            target: x86_64-apple-darwin
-#            build: |
-#              yarn build
-#              strip -x *.node
+          - host: macos-latest
+            target: x86_64-apple-darwin
+            output_name: darwin-x64
+            build: |
+              yarn build
+              strip -x ./*.node
           - host: macos-latest
             target: aarch64-apple-darwin
+            output_name: darwin-arm64
             build: |
               yarn build --target aarch64-apple-darwin
               strip -x ./*.node
@@ -87,6 +90,7 @@ jobs:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+            output_name: linux-x64-gnu
             output_suffix: linux-x64-gnu
             build: |-
               set -e &&
@@ -156,12 +160,12 @@ jobs:
       - name: List package version
         run: echo ${{ env.JS_PACKAGE_VERSION }}
       - name: Rename artifact
-        run: mv ${{ env.APP_NAME }}.node ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
+        run: mv ${{ env.APP_NAME }}.node ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node
         shell: bash
       - name: List again
         run: ls -al
       - name: Upload artifact
-        run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node --clobber
+        run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node --clobber
         env:
           GH_TOKEN: ${{ github.token }}
 
