@@ -48,7 +48,7 @@ jobs:
 #            target/
 #          key: publish-cargo-cache
       - name: Build library
-        run: set -e && yarn build && strip *.node
+        run: set -e && yarn build && file *.node && strip *.node
       - name: List files
         run: ls -al && ls -al lib
       - name: PR or Publish
