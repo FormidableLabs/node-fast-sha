@@ -10,11 +10,9 @@ on:
     tags-ignore:
       - "**"
     paths-ignore:
-      - "**/*.md"
       - LICENSE
       - "**/*.gitignore"
       - .editorconfig
-      - docs/**
   workflow_dispatch:
     inputs:
       force_build_binaries:
