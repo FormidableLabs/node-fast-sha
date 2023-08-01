@@ -20,7 +20,7 @@ on:
 jobs:
   publish:
     name: Publish
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
@@ -48,7 +48,7 @@ jobs:
             target/
           key: publish-cargo-cache
       - name: Build library
-        run: set -e && yarn build && strip *.node
+        run: yarn build
       - name: List files
         run: ls -al && ls -al lib
       - name: PR or Publish
@@ -63,7 +63,6 @@ jobs:
 
 
   build:
-    if: false
     # TODO: if check if changesets actually cut a release (or workflow dispatch triggered with flag)
     needs: publish
     strategy:
