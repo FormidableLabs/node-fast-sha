@@ -65,7 +65,7 @@ jobs:
 
 
   build:
-    if: steps.publish.outputs.published || github.event.inputs.force_build_binaries
+    if: needs.publish.outputs.published || github.event.inputs.force_build_binaries
     needs: publish
     strategy:
       fail-fast: false
