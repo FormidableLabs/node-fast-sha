@@ -5,26 +5,22 @@ const path = require("node:path");
 const pkg = require("../package.json");
 
 const main = async () => {
-  const n = getBinaryName();
-
-  return;
-
   const version = pkg.version;
-
-  const filename = `node-fast-sha-v${version}-${platform}-${arch}.node`;
-  const baseURL = `https://github.com/FormidableLabs/node-fast-sha/releases/download/${version}`;
+  const filename = `node-fast-sha-v${version}-${getBinaryPlatformSuffix()}.node`;
+  const baseURL = `https://github.com/FormidableLabs/node-fast-sha/releases/download/v${version}`;
   const url = `${baseURL}/${filename}/`;
 
   const download = (url) => {
-    console.log(`Attempting download from ${url}`);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       https.get(url, (res) => {
         if (res.statusCode === 302) {
           return download(res.headers.location);
         }
         if (res.headers["content-type"] !== "application/octet-stream") {
-          console.error("BAD");
-          throw new Error("Bad URL");
+          console.error(
+            `Download URL did not return an octet-stream, likely an invalid URL.`,
+          );
+          return;
         }
 
         const outputHandle = fs.createWriteStream(
@@ -48,7 +44,7 @@ const getIsMusl = () => {
   return !glibcVersionRuntime;
 };
 
-const getBinaryName = () => {
+const getBinaryPlatformSuffix = () => {
   const platform = os.platform();
   const arch = os.arch();
   const isMusl = getIsMusl();
