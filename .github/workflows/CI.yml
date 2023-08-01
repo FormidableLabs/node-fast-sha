@@ -19,7 +19,6 @@ on:
 
 jobs:
   publish:
-    if: false # TODO: Remove me
     name: Publish
     runs-on: ubuntu-latest
     steps:
@@ -34,35 +33,35 @@ jobs:
         run: echo "PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
       - name: Echo the version
         run: echo "${{ github.PACKAGE_VERSION  }}"
-      - name: Install JS dependencies
-        run: yarn install
-      - name: Install Rust dependencies
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-      - name: Cache cargo
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            .cargo-cache
-            target/
-          key: publish-cargo-cache
-      - name: Build library
-        run: yarn build
-      - name: List files
-        run: ls -al && ls -al lib
-      - name: PR or Publish
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: yarn run version
-          publish: yarn run changeset publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#      - name: Install JS dependencies
+#        run: yarn install
+#      - name: Install Rust dependencies
+#        uses: dtolnay/rust-toolchain@stable
+#        with:
+#          toolchain: stable
+#      - name: Cache cargo
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#            ~/.cargo/registry/index/
+#            ~/.cargo/registry/cache/
+#            ~/.cargo/git/db/
+#            .cargo-cache
+#            target/
+#          key: publish-cargo-cache
+#      - name: Build library
+#        run: yarn build
+#      - name: List files
+#        run: ls -al && ls -al lib
+#      - name: PR or Publish
+#        id: changesets
+#        uses: changesets/action@v1
+#        with:
+#          version: yarn run version
+#          publish: yarn run changeset publish
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 
 #  build:
