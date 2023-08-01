@@ -162,6 +162,8 @@ jobs:
         run: ls -al
       - name: Upload artifact
         run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
+        env:
+          GH_TOKEN: ${{ github.token }}
 #      - name: Upload artifact
 #        uses: actions/upload-artifact@v3
 #        with:
