@@ -19,6 +19,7 @@ on:
 
 jobs:
   publish:
+    if: false
     name: Publish
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +31,7 @@ jobs:
           check-latest: true
           cache: yarn
       - name: Get the version
-        run: echo "PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
+        run: echo "JS_PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
       - name: Install JS dependencies
         run: yarn install
       - name: Install Rust dependencies
@@ -64,7 +65,7 @@ jobs:
 
   build:
     # TODO: if check if changesets actually cut a release (or workflow dispatch triggered with flag)
-    needs: publish
+#    needs: publish
     strategy:
       fail-fast: false
       matrix:
@@ -156,7 +157,7 @@ jobs:
         run: echo "ARTIFACT_NAME=$(ls ${{ env.APP_NAME }}.*.node)" >> $GITHUB_ENV
         shell: bash
       - name: Rename artifact
-        run: mv ${{ env.ARTIFACT_NAME }} ${{ env.APP_NAME}}-v${{ env.PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
+        run: mv ${{ env.ARTIFACT_NAME }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
         shell: bash
       - name: List again
         run: ls -al
