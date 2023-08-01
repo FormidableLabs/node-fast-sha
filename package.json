@@ -6,7 +6,8 @@
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "install"
   ],
   "napi": {
     "name": "node-fast-sha",
