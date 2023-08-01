@@ -17,7 +17,9 @@ const main = async () => {
           return download(res.headers.location);
         }
         if (res.headers["content-type"] !== "application/octet-stream") {
-          console.error(``);
+          console.error(
+            `Download URL did not return an octet-stream, likely an invalid URL.`,
+          );
           return;
         }
 
