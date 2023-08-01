@@ -48,7 +48,7 @@ jobs:
             target/
           key: publish-cargo-cache
       - name: Build library
-        run: set -e && yarn build && strip ${{ env.APP_NAME }}.node
+        run: set -e && yarn build && strip ./*.node
       - name: List files
         run: ls -al && ls -al lib
       - name: PR or Publish
@@ -89,7 +89,7 @@ jobs:
             build: |-
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
-              strip ${{ env.APP_NAME }}.node
+              strip ./*.node
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
