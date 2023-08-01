@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Testing output
-        run: echo ${{ needs.publish.outputs.published }}
+        run: echo ${{ needs.publish.outputs.published && "IS PUBLISHED" || "NOT PUBLISHED" }}
 
 #    strategy:
 #      fail-fast: false
