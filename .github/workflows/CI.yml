@@ -161,7 +161,7 @@ jobs:
       - name: List again
         run: ls -al
       - name: Upload artifact
-        run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
+        run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.target}}.node --clobber
         env:
           GH_TOKEN: ${{ github.token }}
 
