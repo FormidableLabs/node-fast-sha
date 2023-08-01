@@ -32,7 +32,7 @@ jobs:
       - name: Get the version
         run: echo "PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
       - name: Echo the version
-        run: echo "{{ env.PACKAGE_VERSION }}"
+        run: echo ${{ env.PACKAGE_VERSION }}
 #      - name: Install JS dependencies
 #        run: yarn install
 #      - name: Install Rust dependencies
