@@ -2,9 +2,20 @@
   "name": "node-fast-sha",
   "version": "0.0.6",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "lib/index.mjs",
-  "types": "lib/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": [
+      {
+        "import": "./lib/index.mjs",
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "./lib/index.js"
+    ],
+    "./package.json": "./package.json"
+  },
   "files": [
     "lib",
     "install"
