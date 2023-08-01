@@ -23,6 +23,8 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
+    outputs:
+        published: ${{ steps.changesets.outputs.published }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
@@ -63,7 +65,7 @@ jobs:
 
 
   build:
-    if: needs.publish.steps.changesets.outputs.published == 'true' || github.event.inputs.force_build_binaries
+    if: needs.publish.outputs.published == 'true' || github.event.inputs.force_build_binaries
     needs: publish
     strategy:
       fail-fast: false
