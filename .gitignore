@@ -3,3 +3,4 @@ Cargo.lock
 lib/index.d.ts
 lib/node-fast-sha.node
 node_modules
+**/*.node
