@@ -37,16 +37,16 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-#      - name: Cache cargo
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.cargo/registry/index/
-#            ~/.cargo/registry/cache/
-#            ~/.cargo/git/db/
-#            .cargo-cache
-#            target/
-#          key: publish-cargo-cache
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            .cargo-cache
+            target/
+          key: publish-cargo-cache
       - name: Build library
         run: set -e && yarn build && strip ${{ env.APP_NAME }}.node
       - name: List files
@@ -63,9 +63,8 @@ jobs:
 
 
   build:
-    if: false
     # TODO: if check if changesets actually cut a release (or workflow dispatch triggered with flag)
-#    needs: publish
+    needs: publish
     strategy:
       fail-fast: false
       matrix:
@@ -90,7 +89,7 @@ jobs:
             build: |-
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
-              strip *.node
+              strip ${{ env.APP_NAME }}.node
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
