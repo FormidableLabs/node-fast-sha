@@ -31,132 +31,135 @@ jobs:
           cache: yarn
       - name: Get the version
         run: echo "PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
-      - name: Echo the version
-        run: echo ${{ env.PACKAGE_VERSION }}
-#      - name: Install JS dependencies
-#        run: yarn install
-#      - name: Install Rust dependencies
-#        uses: dtolnay/rust-toolchain@stable
-#        with:
-#          toolchain: stable
-#      - name: Cache cargo
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.cargo/registry/index/
-#            ~/.cargo/registry/cache/
-#            ~/.cargo/git/db/
-#            .cargo-cache
-#            target/
-#          key: publish-cargo-cache
-#      - name: Build library
-#        run: yarn build
-#      - name: List files
-#        run: ls -al && ls -al lib
-#      - name: PR or Publish
-#        id: changesets
-#        uses: changesets/action@v1
-#        with:
-#          version: yarn run version
-#          publish: yarn run changeset publish
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install JS dependencies
+        run: yarn install
+      - name: Install Rust dependencies
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            .cargo-cache
+            target/
+          key: publish-cargo-cache
+      - name: Build library
+        run: yarn build
+      - name: List files
+        run: ls -al && ls -al lib
+      - name: PR or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: yarn run version
+          publish: yarn run changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 
-#  build:
-#    if: false
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        settings:
-##          - host: macos-latest
-##            target: x86_64-apple-darwin
-##            build: |
-##              yarn build
-##              strip -x *.node
+  build:
+    # TODO: if check if changesets actually cut a release (or workflow dispatch triggered with flag)
+    needs: publish
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+#          - host: macos-latest
+#            target: x86_64-apple-darwin
+#            build: |
+#              yarn build
+#              strip -x *.node
 #          - host: macos-latest
 #            target: aarch64-apple-darwin
 #            build: |
 #              yarn build --target aarch64-apple-darwin
 #              strip -x *.node
-##          - host: windows-latest
-##            build: yarn build
-##            target: x86_64-pc-windows-msvc
-#          - host: ubuntu-latest
-#            target: x86_64-unknown-linux-gnu
-#            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-#            output_suffix: linux-x64-gnu
-#            build: |-
-#              set -e &&
-#              yarn build --target x86_64-unknown-linux-gnu &&
-#              strip *.node
-#    name: stable - ${{ matrix.settings.target }} - node@18
-#    runs-on: ${{ matrix.settings.host }}
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Setup node
-#        uses: actions/setup-node@v3
-#        if: ${{ !matrix.settings.docker }}
-#        with:
-#          node-version: 18
-#          check-latest: true
-#          cache: yarn
-#      - name: Install
-#        uses: dtolnay/rust-toolchain@stable
-#        if: ${{ !matrix.settings.docker }}
-#        with:
-#          toolchain: stable
-#          targets: ${{ matrix.settings.target }}
-#      - name: Cache cargo
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.cargo/registry/index/
-#            ~/.cargo/registry/cache/
-#            ~/.cargo/git/db/
-#            .cargo-cache
-#            target/
-#          key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
-#      - uses: goto-bus-stop/setup-zig@v2
-#        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
-#        with:
-#          version: 0.10.1
-#      - name: Setup toolchain
-#        run: ${{ matrix.settings.setup }}
-#        if: ${{ matrix.settings.setup }}
-#        shell: bash
-#      - name: Setup node x86
-#        if: matrix.settings.target == 'i686-pc-windows-msvc'
-#        run: yarn config set supportedArchitectures.cpu "ia32"
-#        shell: bash
-#      - name: Install dependencies
-#        run: yarn install
-#      - name: Setup node x86
-#        uses: actions/setup-node@v3
-#        if: matrix.settings.target == 'i686-pc-windows-msvc'
-#        with:
-#          node-version: 18
-#          check-latest: true
-#          cache: yarn
-#          architecture: x86
-#      - name: Build in docker
-#        uses: addnab/docker-run-action@v3
-#        if: ${{ matrix.settings.docker }}
-#        with:
-#          image: ${{ matrix.settings.docker }}
-#          options: "--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build"
-#          run: ${{ matrix.settings.build }}
-#      - name: Build
-#        run: ${{ matrix.settings.build }}
-#        if: ${{ !matrix.settings.docker }}
-#        shell: bash
-#      - name: Artifact name
-#        run: echo "ARTIFACT_NAME=$(ls ${{ env.APP_NAME }}.*.node)" >> $GITHUB_ENV
-#        shell: bash
-#      - name: List
-#        run: ls -al
-#        shell: bash
+#          - host: windows-latest
+#            build: yarn build
+#            target: x86_64-pc-windows-msvc
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+            output_suffix: linux-x64-gnu
+            build: |-
+              set -e &&
+              yarn build --target x86_64-unknown-linux-gnu &&
+              strip *.node
+    name: stable - ${{ matrix.settings.target }} - node@18
+    runs-on: ${{ matrix.settings.host }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        if: ${{ !matrix.settings.docker }}
+        with:
+          node-version: 18
+          check-latest: true
+          cache: yarn
+      - name: Install
+        uses: dtolnay/rust-toolchain@stable
+        if: ${{ !matrix.settings.docker }}
+        with:
+          toolchain: stable
+          targets: ${{ matrix.settings.target }}
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            .cargo-cache
+            target/
+          key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
+      - uses: goto-bus-stop/setup-zig@v2
+        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
+        with:
+          version: 0.10.1
+      - name: Setup toolchain
+        run: ${{ matrix.settings.setup }}
+        if: ${{ matrix.settings.setup }}
+        shell: bash
+      - name: Setup node x86
+        if: matrix.settings.target == 'i686-pc-windows-msvc'
+        run: yarn config set supportedArchitectures.cpu "ia32"
+        shell: bash
+      - name: Install dependencies
+        run: yarn install
+      - name: Setup node x86
+        uses: actions/setup-node@v3
+        if: matrix.settings.target == 'i686-pc-windows-msvc'
+        with:
+          node-version: 18
+          check-latest: true
+          cache: yarn
+          architecture: x86
+      - name: Build in docker
+        uses: addnab/docker-run-action@v3
+        if: ${{ matrix.settings.docker }}
+        with:
+          image: ${{ matrix.settings.docker }}
+          options: "--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build"
+          run: ${{ matrix.settings.build }}
+      - name: Build
+        run: ${{ matrix.settings.build }}
+        if: ${{ !matrix.settings.docker }}
+      - name: List
+        run: ls -al
+        shell: bash
+      - name: Artifact name
+        run: echo "ARTIFACT_NAME=$(ls ${{ env.APP_NAME }}.*.node)" >> $GITHUB_ENV
+        shell: bash
+      - name: Rename artifact
+        run: mv ${{ env.ARTIFACT_NAME }} ${{ env.APP_NAME}}-v${{ env.PACKAGE_VERSION }}-${{ matrix.settings.target}}.node
+        shell: bash
+      - name: List again
+        run: ls -al
 #      - name: Upload artifact
 #        uses: actions/upload-artifact@v3
 #        with:
