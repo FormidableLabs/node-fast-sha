@@ -18,7 +18,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  version:
+    name: Get version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the version
+        run: echo "PACKAGE_VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
+      - name: Echo the version
+        run: echo "${{ github.PACKAGE_VERSION  }}"
+
   publish:
+    if: false # TODO: Remove me
     name: Publish
     runs-on: ubuntu-latest
     steps:
