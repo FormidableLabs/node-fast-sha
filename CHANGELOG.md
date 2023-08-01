@@ -1,5 +1,11 @@
 # node-fast-sha
 
+## 0.0.7
+
+### Patch Changes
+
+- Support ESM by configuring exports field ([#7](https://github.com/FormidableLabs/node-fast-sha/pull/7))
+
 ## 0.0.6
 
 ### Patch Changes
