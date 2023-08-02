@@ -1,16 +1,20 @@
 name: Installation Tests
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   test:
     strategy:
       matrix:
-        # TODO: How to run on e.g. mac arm64 vs x64
+        # TODO: How do i test darwin-arm64
         settings:
-          - host: macos-latest
-          - host: ubuntu-latest
+          - host: macos-latest # test darwin-x64
+          - host: ubuntu-latest # test linux-x64-gnu
+          - host: windows-latest # win32-x64-msvc
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v2

@@ -82,9 +82,10 @@ jobs:
             build: |
               yarn build --target aarch64-apple-darwin
               strip -x ./*.node
-#          - host: windows-latest
-#            build: yarn build
-#            target: x86_64-pc-windows-msvc
+          - host: windows-latest
+            build: yarn build
+            target: x86_64-pc-windows-msvc
+            output_name: win32-x64-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
@@ -94,6 +95,11 @@ jobs:
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
               strip ./*.node
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            output_name: linux-x64-musl
+            build: set -e && yarn build && strip ./*.node
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
