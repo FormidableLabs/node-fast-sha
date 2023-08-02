@@ -1,5 +1,11 @@
 # node-fast-sha
 
+## 0.0.8
+
+### Patch Changes
+
+- Add README ([`3fbbf46`](https://github.com/FormidableLabs/node-fast-sha/commit/3fbbf4677a5c89535e93180392ea2f1ab68958fb))
+
 ## 0.0.7
 
 ### Patch Changes
