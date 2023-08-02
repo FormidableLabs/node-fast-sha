@@ -70,38 +70,44 @@ jobs:
       matrix:
         # Use getBinaryName from install/binary to determine output_name here.
         settings:
-          - host: macos-latest
+          - output_name: darwin-x64
+            host: macos-latest
             target: x86_64-apple-darwin
-            output_name: darwin-x64
             build: |
               yarn build
               strip -x ./*.node
-          - host: macos-latest
+
+          - output_name: darwin-arm64
+            host: macos-latest
             target: aarch64-apple-darwin
-            output_name: darwin-arm64
             build: |
               yarn build --target aarch64-apple-darwin
               strip -x ./*.node
-          - host: windows-latest
+
+          - output_name: win32-x64-msvc
+            host: windows-latest
             build: yarn build
             target: x86_64-pc-windows-msvc
-            output_name: win32-x64-msvc
-          - host: ubuntu-latest
+
+          - output_name: linux-x64-gnu
+            host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            output_name: linux-x64-gnu
-            output_suffix: linux-x64-gnu
             build: |-
               set -e &&
               yarn build --target x86_64-unknown-linux-gnu &&
               strip ./*.node
-          - host: ubuntu-latest
+
+          - output_name: linux-x64-musl
+            host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            output_name: linux-x64-musl
             build: set -e && yarn build && strip ./*.node
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
@@ -134,11 +140,9 @@ jobs:
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
-        shell: bash
       - name: Setup node x86
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         run: yarn config set supportedArchitectures.cpu "ia32"
-        shell: bash
       - name: Install dependencies
         run: yarn install
       - name: Setup node x86
@@ -160,10 +164,9 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
       - name: Get Package Version
-        run: echo "JS_PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
+        run: echo "JS_PACKAGE_VERSION=$(node -p 'require(require("path").resolve(__dirname, "package.json")).version')" >> $GITHUB_ENV
       - name: Rename artifact
         run: mv ${{ env.APP_NAME }}.node ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node
-        shell: bash
       - name: Upload artifact
         run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node --clobber
         env:
