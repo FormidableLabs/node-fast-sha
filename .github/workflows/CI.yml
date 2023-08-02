@@ -51,8 +51,6 @@ jobs:
           key: publish-cargo-cache
       - name: Build library
         run: set -e && yarn build && strip ./*.node
-      - name: List files
-        run: ls -al && ls -al lib
       - name: PR or Publish
         id: changesets
         uses: changesets/action@v1
@@ -157,13 +155,9 @@ jobs:
         if: ${{ !matrix.settings.docker }}
       - name: Get Package Version
         run: echo "JS_PACKAGE_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
-      - name: List package version
-        run: echo ${{ env.JS_PACKAGE_VERSION }}
       - name: Rename artifact
         run: mv ${{ env.APP_NAME }}.node ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node
         shell: bash
-      - name: List again
-        run: ls -al
       - name: Upload artifact
         run: gh release upload v${{ env.JS_PACKAGE_VERSION }} ${{ env.APP_NAME}}-v${{ env.JS_PACKAGE_VERSION }}-${{ matrix.settings.output_name}}.node --clobber
         env:

@@ -1,0 +1,23 @@
+name: Installation Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        settings:
+          - host: macos-latest
+    runs-on: ${{ matrix.settings.host }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Could matrix this, but idk
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Run tests
+        run: yarn run test
