@@ -7,8 +7,10 @@ jobs:
   test:
     strategy:
       matrix:
+        # TODO: How to run on e.g. mac arm64 vs x64
         settings:
           - host: macos-latest
+          - host: ubuntu-latest
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v2
