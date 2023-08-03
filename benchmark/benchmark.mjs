@@ -37,7 +37,7 @@ const measure = async (size) => {
             " ops/sec",
           Benchmark.formatNumber(Math.round(1 / rustResult.stats.mean)) +
             " ops/sec",
-          `**${fastest === rustResult ? "Rust" : "JS"}** (${(
+          `**${fastest === rustResult ? "🦀Rust" : "🟢JS"}** (${(
             slowest.stats.mean / fastest.stats.mean
           ).toFixed(3)}x as fast)`,
         ]);
