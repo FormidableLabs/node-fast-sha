@@ -1,4 +1,4 @@
-name: Installation Tests
+name: Installation and Benchmarks
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  benchmark:
     strategy:
       matrix:
         # TODO: How do i test darwin-arm64
