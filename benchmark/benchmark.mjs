@@ -51,7 +51,7 @@ const main = async () => {
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
-    ["Size", "JS", "Rust", "Fastest"],
+    ["Input Size", "Node.js Impl", "Rust/NAPI Impl", "Fastest"],
     ["---", "---", "---", "---"],
     ...results,
   ]
