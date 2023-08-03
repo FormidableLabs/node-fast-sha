@@ -51,14 +51,16 @@ const main = async () => {
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
-    ["Input Size", "Node.js Impl", "Rust/NAPI Impl", "Fastest"],
+    ["Input Length", "Node.js Impl", "Rust/NAPI Impl", "Fastest"],
     ["---", "---", "---", "---"],
     ...results,
   ]
     .map((row) => row.join(" | "))
     .join("\n");
 
-  console.log(table);
+  console.log(
+    `${table}\n\n Ran on 500 random inputs of each given length using Benchmark.js.`,
+  );
 };
 
 main().catch(console.error);
