@@ -32,7 +32,7 @@ const measure = async (size) => {
         const rustResult = fastest.name === "rust" ? fastest : slowest;
 
         resolve([
-          size,
+          Benchmark.formatNumber(size),
           Benchmark.formatNumber(Math.round(1 / jsResult.stats.mean)) +
             " ops/sec",
           Benchmark.formatNumber(Math.round(1 / rustResult.stats.mean)) +
@@ -47,7 +47,7 @@ const measure = async (size) => {
 };
 
 const main = async () => {
-  const sizes = [10, 100, 1000, 10000];
+  const sizes = [10, 100, 500, 1000, 10000];
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
