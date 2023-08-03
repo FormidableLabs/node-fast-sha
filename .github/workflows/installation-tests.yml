@@ -17,6 +17,9 @@ jobs:
           - host: ubuntu-latest # test linux-x64-gnu
           - host: windows-latest # win32-x64-msvc
     runs-on: ${{ matrix.settings.host }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
