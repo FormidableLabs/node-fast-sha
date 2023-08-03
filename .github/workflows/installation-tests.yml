@@ -28,3 +28,5 @@ jobs:
         run: yarn install
       - name: Run tests
         run: yarn run test
+      - name: Benchmark
+        run: node ./benchmark/benchmark.mjs >> $GITHUB_STEP_SUMMARY
