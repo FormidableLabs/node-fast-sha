@@ -116,15 +116,16 @@ jobs:
 #            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
 #            build: set -e && yarn build && strip ./*.node
 
-          - output_name: linux-arm64-musl
-            host: ubuntu-latest
-            target: aarch64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: |-
-              set -e &&
-              rustup target add aarch64-unknown-linux-musl &&
-              yarn build --target aarch64-unknown-linux-musl &&
-              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip ./*.node
+            # Needs test
+#          - output_name: linux-arm64-musl
+#            host: ubuntu-latest
+#            target: aarch64-unknown-linux-musl
+#            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+#            build: |-
+#              set -e &&
+#              rustup target add aarch64-unknown-linux-musl &&
+#              yarn build --target aarch64-unknown-linux-musl &&
+#              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip ./*.node
 
           - output_name: linux-arm64-gnu
             host: ubuntu-latest
@@ -132,17 +133,19 @@ jobs:
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
             build: |-
               set -e &&
-              yarn build --target aar 
+              yarn build --target aarch64-unknown-linux-gnu &&
+              aarch64-unknown-linux-gnu-strip ./*.node
 
-          - output_name: linux-arm-gnueabihf
-            host: ubuntu-latest
-            target: armv7-unknown-linux-gnueabihf
-            setup: |
-              sudo apt-get update
-              sudo apt-get install gcc-arm-linux-gnueabihf -y
-            build: |
-              yarn build --target armv7-unknown-linux-gnueabihf
-              arm-linux-gnueabihf-strip ./*.node
+            # Needs test
+#          - output_name: linux-arm-gnueabihf
+#            host: ubuntu-latest
+#            target: armv7-unknown-linux-gnueabihf
+#            setup: |
+#              sudo apt-get update
+#              sudo apt-get install gcc-arm-linux-gnueabihf -y
+#            build: |
+#              yarn build --target armv7-unknown-linux-gnueabihf
+#              arm-linux-gnueabihf-strip ./*.node
 
           # TODO: linux-arm-gnueabihf
           # TODO: freebsd-x64
