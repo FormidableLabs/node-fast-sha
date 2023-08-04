@@ -4,15 +4,15 @@ env:
   APP_NAME: node-fast-sha
   MACOSX_DEPLOYMENT_TARGET: "10.13"
 on:
-  push:
-    branches:
-      - main
-    tags-ignore:
-      - "**"
-    paths-ignore:
-      - LICENSE
-      - "**/*.gitignore"
-      - .editorconfig
+#  push:
+#    branches:
+#      - main
+#    tags-ignore:
+#      - "**"
+#    paths-ignore:
+#      - LICENSE
+#      - "**/*.gitignore"
+#      - .editorconfig
   workflow_dispatch:
     inputs:
       force_build_binaries:
@@ -70,39 +70,50 @@ jobs:
       matrix:
         # Use getBinaryName from install/binary to determine output_name here.
         settings:
-          - output_name: darwin-x64
-            host: macos-latest
-            target: x86_64-apple-darwin
-            build: |
-              yarn build
-              strip -x ./*.node
+#          - output_name: darwin-x64
+#            host: macos-latest
+#            target: x86_64-apple-darwin
+#            build: |
+#              yarn build
+#              strip -x ./*.node
 
-          - output_name: darwin-arm64
-            host: macos-latest
-            target: aarch64-apple-darwin
-            build: |
-              yarn build --target aarch64-apple-darwin
-              strip -x ./*.node
+#          - output_name: darwin-arm64
+#            host: macos-latest
+#            target: aarch64-apple-darwin
+#            build: |
+#              yarn build --target aarch64-apple-darwin
+#              strip -x ./*.node
 
-          - output_name: win32-x64-msvc
+#          - output_name: win32-x64-msvc
+#            host: windows-latest
+#            build: yarn build
+#            target: x86_64-pc-windows-msvc
+
+          # TODO: A test for this...
+          - output_name: win32-ia32-msvc
             host: windows-latest
-            build: yarn build
-            target: x86_64-pc-windows-msvc
+            build: yarn build --target i686-pc-windows-msvc
+            target: i686-pc-windows-msvc
 
-          - output_name: linux-x64-gnu
-            host: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            build: |-
-              set -e &&
-              yarn build --target x86_64-unknown-linux-gnu &&
-              strip ./*.node
+          # TODO: win32-arm64-msvc
 
-          - output_name: linux-x64-musl
-            host: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && yarn build && strip ./*.node
+#          - output_name: linux-x64-gnu
+#            host: ubuntu-latest
+#            target: x86_64-unknown-linux-gnu
+#            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+#            build: |-
+#              set -e &&
+#              yarn build --target x86_64-unknown-linux-gnu &&
+#              strip ./*.node
+
+#          - output_name: linux-x64-musl
+#            host: ubuntu-latest
+#            target: x86_64-unknown-linux-musl
+#            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+#            build: set -e && yarn build && strip ./*.node
+
+          # TODO: linux-arm-gnueabihf
+          # TODO: freebsd-x64
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     defaults:
