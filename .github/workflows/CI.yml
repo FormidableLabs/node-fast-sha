@@ -89,17 +89,17 @@ jobs:
 #            build: yarn build
 #            target: x86_64-pc-windows-msvc
 
-          # Needs test
+            # Needs test
 #          - output_name: win32-ia32-msvc
 #            host: windows-latest
 #            build: yarn build --target i686-pc-windows-msvc
 #            target: i686-pc-windows-msvc
 
-          # Needs test
-          - output_name: win32-arm64-msvc
-            host: windows-latest
-            target: aarch64-pc-windows-msvc
-            build: yarn build --target aarch64-pc-windows-msvc
+            # Needs test
+#          - output_name: win32-arm64-msvc
+#            host: windows-latest
+#            target: aarch64-pc-windows-msvc
+#            build: yarn build --target aarch64-pc-windows-msvc
 
 #          - output_name: linux-x64-gnu
 #            host: ubuntu-latest
@@ -115,6 +115,34 @@ jobs:
 #            target: x86_64-unknown-linux-musl
 #            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
 #            build: set -e && yarn build && strip ./*.node
+
+          - output_name: linux-arm64-musl
+            host: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            build: |-
+              set -e &&
+              rustup target add aarch64-unknown-linux-musl &&
+              yarn build --target aarch64-unknown-linux-musl &&
+              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip ./*.node
+
+          - output_name: linux-arm64-gnu
+            host: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
+            build: |-
+              set -e &&
+              yarn build --target aar 
+
+          - output_name: linux-arm-gnueabihf
+            host: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf
+            setup: |
+              sudo apt-get update
+              sudo apt-get install gcc-arm-linux-gnueabihf -y
+            build: |
+              yarn build --target armv7-unknown-linux-gnueabihf
+              arm-linux-gnueabihf-strip ./*.node
 
           # TODO: linux-arm-gnueabihf
           # TODO: freebsd-x64
