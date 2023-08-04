@@ -89,13 +89,17 @@ jobs:
 #            build: yarn build
 #            target: x86_64-pc-windows-msvc
 
-          # TODO: A test for this...
-          - output_name: win32-ia32-msvc
-            host: windows-latest
-            build: yarn build --target i686-pc-windows-msvc
-            target: i686-pc-windows-msvc
+          # Needs test
+#          - output_name: win32-ia32-msvc
+#            host: windows-latest
+#            build: yarn build --target i686-pc-windows-msvc
+#            target: i686-pc-windows-msvc
 
-          # TODO: win32-arm64-msvc
+          # Needs test
+          - output_name: win32-arm64-msvc
+            host: windows-latest
+            target: aarch64-pc-windows-msvc
+            build: yarn build --target aarch64-pc-windows-msvc
 
 #          - output_name: linux-x64-gnu
 #            host: ubuntu-latest
