@@ -1,5 +1,11 @@
 # node-fast-sha
 
+## 0.0.10
+
+### Patch Changes
+
+- Remove experimental Buffer input ([`7ce6a84`](https://github.com/FormidableLabs/node-fast-sha/commit/7ce6a843197c6434f544db1a4fca072f5a97bf52))
+
 ## 0.0.9
 
 ### Patch Changes
