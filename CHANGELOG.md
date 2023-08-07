@@ -1,5 +1,11 @@
 # node-fast-sha
 
+## 0.0.11
+
+### Patch Changes
+
+- Add benchmark to README ([`94072e6`](https://github.com/FormidableLabs/node-fast-sha/commit/94072e62b382456c87d1af080a0daa74f5f55b06))
+
 ## 0.0.10
 
 ### Patch Changes
