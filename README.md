@@ -1,6 +1,6 @@
 # `node-fast-sha`
 
-This library uses [NAPI-RS](https://napi.rs/) to wrap the [sha2 crate](https://docs.rs/sha2/latest/sha2/) from the Rust ecosystem to create sha256 and sha512 implementations that are driven by binaries compiled from Rust. This proximity to "the metal" makes this library very fast, while providing a friendly Node.js API.
+This library uses [NAPI-RS](https://napi.rs/) to wrap the [sha2 crate](https://docs.rs/sha2/latest/sha2/) from the Rust ecosystem to create sha256 and sha512 implementations that are driven by binaries compiled from Rust. This proximity to "the metal" makes this library very fast (for relatively small inputs), while providing a friendly Node.js API.
 
 ## Usage
 

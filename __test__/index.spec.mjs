@@ -1,6 +1,6 @@
 import test from "ava";
 
-import { sha256, sha256Buf, sha512, sha512Buf } from "../lib/index.mjs";
+import { sha256, sha512 } from "../lib/index.mjs";
 
 test("sha256 from native", (t) => {
   t.is(
