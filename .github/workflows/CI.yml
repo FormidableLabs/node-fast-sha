@@ -4,15 +4,15 @@ env:
   APP_NAME: node-fast-sha
   MACOSX_DEPLOYMENT_TARGET: "10.13"
 on:
-#  push:
-#    branches:
-#      - main
-#    tags-ignore:
-#      - "**"
-#    paths-ignore:
-#      - LICENSE
-#      - "**/*.gitignore"
-#      - .editorconfig
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - "**"
+    paths-ignore:
+      - LICENSE
+      - "**/*.gitignore"
+      - .editorconfig
   workflow_dispatch:
     inputs:
       force_build_binaries:

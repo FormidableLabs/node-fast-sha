@@ -1,6 +1,6 @@
 import Benchmark from "benchmark";
 import crypto from "node:crypto";
-import { sha256, sha256Buf } from "../lib/index.mjs";
+import { sha256 } from "../lib/index.mjs";
 
 const hashJs = (val) => crypto.createHash("sha256").update(val).digest("hex");
 
@@ -19,58 +19,27 @@ const measure = async (size) => {
         i = (i + 1) % N;
         sha256(values[i]);
       })
-      .add("rust (buffer)", () => {
-        i = (i + 1) % N;
-        sha256Buf(Buffer.from(values[i]));
-      })
       .add("js", () => {
         i = (i + 1) % N;
         hashJs(values[i]);
       })
-      .add("js (buffer)", () => {
-        i = (i + 1) % N;
-        hashJs(Buffer.from(values[i]));
-      })
 
       .on("complete", function () {
-        const _results = this.filter("successful");
-        const results = [
-          _results[0],
-          _results[1],
-          _results[2],
-          _results[3],
-        ].sort((a, b) => a.stats.mean - b.stats.mean);
+        const fastest = this.filter("fastest")[0];
+        const slowest = this.filter("slowest")[0];
 
-        const jsResult = results.find((r) => r.name === "js");
-        const jsBufferResult = results.find((r) => r.name === "js (buffer)");
-        const rustResult = results.find((r) => r.name === "rust");
-        const rustBufferResult = results.find(
-          (r) => r.name === "rust (buffer)",
-        );
-        const fastest = results[0],
-          slowest = results[2];
+        const jsResult = fastest.name === "js" ? fastest : slowest;
+        const rustResult = fastest.name === "rust" ? fastest : slowest;
 
         resolve([
           Benchmark.formatNumber(size),
           Benchmark.formatNumber(Math.round(1 / jsResult.stats.mean)) +
             " ops/sec",
-          Benchmark.formatNumber(Math.round(1 / jsBufferResult.stats.mean)) +
-            " ops/sec" +
-            ` (${(
-              (jsResult.stats.mean / jsBufferResult.stats.mean) *
-              100
-            ).toFixed(2)}% as fast as no buffer)`,
           Benchmark.formatNumber(Math.round(1 / rustResult.stats.mean)) +
             " ops/sec",
-          Benchmark.formatNumber(Math.round(1 / rustBufferResult.stats.mean)) +
-            " ops/sec" +
-            ` (${(
-              (rustResult.stats.mean / rustBufferResult.stats.mean) *
-              100
-            ).toFixed(2)}% as fast as no buffer)`,
-          `**${fastest.name}** (${(
+          `**${fastest === rustResult ? "🦀 Rust" : "🟢 JS"}** (${(
             slowest.stats.mean / fastest.stats.mean
-          ).toFixed(3)}x as fast as ${slowest.name})`,
+          ).toFixed(3)}x as fast)`,
         ]);
       })
       .run({ async: true });
@@ -79,19 +48,11 @@ const measure = async (size) => {
 
 const main = async () => {
   const sizes = [10, 100, 500, 1000, 10000];
-  // const sizes = [10];
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
-    [
-      "Input Length",
-      "Node.js Impl",
-      "Node.js with Buffer",
-      "Rust/NAPI Impl",
-      "Rust with Buffer",
-      "Fastest",
-    ],
-    ["---", "---", "---", "---", "---", "---"],
+    ["Input Length", "Node.js Impl", "Rust/NAPI Impl", "Fastest"],
+    ["---", "---", "---", "---"],
     ...results,
   ]
     .map((row) => row.join(" | "))
