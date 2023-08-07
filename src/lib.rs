@@ -32,3 +32,14 @@ pub fn sha256(input: String) -> String {
   let result = hasher.finalize();
   format!("{:x}", result)
 }
+
+// TODO: REMOVE
+#[napi]
+pub fn sha256_buf(buf: Buffer) -> String {
+  let mut hasher = Sha256::new();
+  let input: Cow<'_, str> = String::from_utf8_lossy(&buf);
+
+  hasher.update(input.into_owned());
+  let result = hasher.finalize();
+  format!("{:x}", result)
+}
