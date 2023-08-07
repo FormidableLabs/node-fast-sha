@@ -1,9 +1,6 @@
 name: Installation and Benchmarks
 
 on:
-  pull_request:
-    branches:
-      - main
 #  push:
 #    branches:
 #      - main
