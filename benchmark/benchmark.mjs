@@ -55,11 +55,19 @@ const measure = async (size) => {
           Benchmark.formatNumber(Math.round(1 / jsResult.stats.mean)) +
             " ops/sec",
           Benchmark.formatNumber(Math.round(1 / jsBufferResult.stats.mean)) +
-            " ops/sec",
+            " ops/sec" +
+            ` (${(
+              (jsResult.stats.mean / jsBufferResult.stats.mean) *
+              100
+            ).toFixed(2)}% as fast as no buffer)`,
           Benchmark.formatNumber(Math.round(1 / rustResult.stats.mean)) +
             " ops/sec",
           Benchmark.formatNumber(Math.round(1 / rustBufferResult.stats.mean)) +
-            " ops/sec",
+            " ops/sec" +
+            ` (${(
+              (rustResult.stats.mean / rustBufferResult.stats.mean) *
+              100
+            ).toFixed(2)}% as fast as no buffer)`,
           `**${fastest.name}** (${(
             slowest.stats.mean / fastest.stats.mean
           ).toFixed(3)}x as fast as ${slowest.name})`,
@@ -70,8 +78,8 @@ const measure = async (size) => {
 };
 
 const main = async () => {
-  const sizes = [10, 100, 500, 1000, 10000];
-  // const sizes = [10];
+  // const sizes = [10, 100, 500, 1000, 10000];
+  const sizes = [10];
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
