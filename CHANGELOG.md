@@ -1,5 +1,11 @@
 # node-fast-sha
 
+## 0.0.9
+
+### Patch Changes
+
+- (Experimental) add buffer versions ([`4c86049`](https://github.com/FormidableLabs/node-fast-sha/commit/4c86049d70d40046ea85b0b1261e79df6688b07d))
+
 ## 0.0.8
 
 ### Patch Changes
