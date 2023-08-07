@@ -78,8 +78,8 @@ const measure = async (size) => {
 };
 
 const main = async () => {
-  // const sizes = [10, 100, 500, 1000, 10000];
-  const sizes = [10];
+  const sizes = [10, 100, 500, 1000, 10000];
+  // const sizes = [10];
   const results = await Promise.all(sizes.map(measure));
 
   const table = [
