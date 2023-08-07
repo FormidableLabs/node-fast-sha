@@ -27,14 +27,22 @@ const measure = async (size) => {
         i = (i + 1) % N;
         hashJs(values[i]);
       })
+      .add("js (buffer)", () => {
+        i = (i + 1) % N;
+        hashJs(Buffer.from(values[i]));
+      })
 
       .on("complete", function () {
         const _results = this.filter("successful");
-        const results = [_results[0], _results[1], _results[2]].sort(
-          (a, b) => a.stats.mean - b.stats.mean,
-        );
+        const results = [
+          _results[0],
+          _results[1],
+          _results[2],
+          _results[3],
+        ].sort((a, b) => a.stats.mean - b.stats.mean);
 
         const jsResult = results.find((r) => r.name === "js");
+        const jsBufferResult = results.find((r) => r.name === "js (buffer)");
         const rustResult = results.find((r) => r.name === "rust");
         const rustBufferResult = results.find(
           (r) => r.name === "rust (buffer)",
@@ -45,6 +53,8 @@ const measure = async (size) => {
         resolve([
           Benchmark.formatNumber(size),
           Benchmark.formatNumber(Math.round(1 / jsResult.stats.mean)) +
+            " ops/sec",
+          Benchmark.formatNumber(Math.round(1 / jsBufferResult.stats.mean)) +
             " ops/sec",
           Benchmark.formatNumber(Math.round(1 / rustResult.stats.mean)) +
             " ops/sec",
@@ -68,11 +78,12 @@ const main = async () => {
     [
       "Input Length",
       "Node.js Impl",
+      "Node.js with Buffer",
       "Rust/NAPI Impl",
       "Rust with Buffer",
       "Fastest",
     ],
-    ["---", "---", "---", "---", "---"],
+    ["---", "---", "---", "---", "---", "---"],
     ...results,
   ]
     .map((row) => row.join(" | "))
